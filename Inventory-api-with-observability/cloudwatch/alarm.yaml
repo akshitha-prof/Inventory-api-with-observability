@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudWatch Alarms for Inventory Lending API
+
+Resources:
+  HighErrorRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: InventoryAPI-High5xxErrorRate
+      AlarmDescription: Triggers when 5xx errors exceed 10 in 5 minutes
+      Namespace: AWS/ElasticBeanstalk
+      MetricName: ApplicationRequests5xx
+      Dimensions:
+        - Name: EnvironmentName
+          Value: InventoryApi-prod
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 10
+      ComparisonOperator: GreaterThanThreshold
+      AlarmActions:
+        - !Ref AlertTopic
+
+  HighLatencyAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: InventoryAPI-HighBorrowLatency
+      AlarmDescription: Triggers when p95 borrow latency exceeds 2 seconds
+      Namespace: InventoryAPI
+      MetricName: inventory.borrow.duration
+      Dimensions:
+        - Name: service
+          Value: inventory-api
+      ExtendedStatistic: p95
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 2000
+      ComparisonOperator: GreaterThanThreshold
+      AlarmActions:
+        - !Ref AlertTopic
+
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: InventoryAPI-Alerts
+      Subscription:
+        - Protocol: email
+          Endpoint: your-email@example.com
+
+Outputs:
+  AlertTopicArn:
+    Value: !Ref AlertTopic
+    Description: SNS Topic ARN for alarm notifications

@@ -1,0 +1,23 @@
+# Additional Spring properties for AWS observability profile
+# Add these to your Project 1 application.yml or use as a separate profile
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      cloudwatch:
+        namespace: InventoryAPI
+        step: 1m
+        enabled: true
+    tags:
+      application: inventory-lending-api
+      environment: production
+
+# X-Ray tracing
+com:
+  amazonaws:
+    xray:
+      emitSegments: true

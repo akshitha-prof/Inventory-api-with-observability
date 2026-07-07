@@ -1,0 +1,81 @@
+{
+    "widgets": [
+        {
+            "type": "metric",
+            "x": 0, "y": 0, "width": 12, "height": 6,
+            "properties": {
+                "title": "Items Borrowed vs Returned (per hour)",
+                "metrics": [
+                    ["InventoryAPI", "inventory.items.borrowed.total", "service", "inventory-api", { "stat": "Sum", "period": 3600 }],
+                    ["InventoryAPI", "inventory.items.returned.total", "service", "inventory-api", { "stat": "Sum", "period": 3600 }]
+                ],
+                "view": "timeSeries",
+                "region": "us-east-1",
+                "period": 3600
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12, "y": 0, "width": 12, "height": 6,
+            "properties": {
+                "title": "Active Loans (current)",
+                "metrics": [
+                    ["InventoryAPI", "inventory.loans.active", "service", "inventory-api", { "stat": "Average", "period": 60 }]
+                ],
+                "view": "timeSeries",
+                "region": "us-east-1"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0, "y": 6, "width": 12, "height": 6,
+            "properties": {
+                "title": "Borrow Transaction Latency (p50, p95, p99)",
+                "metrics": [
+                    ["InventoryAPI", "inventory.borrow.duration", "service", "inventory-api", { "stat": "p50", "period": 300 }],
+                    ["InventoryAPI", "inventory.borrow.duration", "service", "inventory-api", { "stat": "p95", "period": 300 }],
+                    ["InventoryAPI", "inventory.borrow.duration", "service", "inventory-api", { "stat": "p99", "period": 300 }]
+                ],
+                "view": "timeSeries",
+                "region": "us-east-1"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12, "y": 6, "width": 12, "height": 6,
+            "properties": {
+                "title": "Infrastructure: CPU & Memory",
+                "metrics": [
+                    ["AWS/ElasticBeanstalk", "EnvironmentHealth", "EnvironmentName", "InventoryApi-prod"],
+                    ["AWS/EC2", "CPUUtilization", "EnvironmentName", "InventoryApi-prod"]
+                ],
+                "view": "timeSeries",
+                "region": "us-east-1"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0, "y": 12, "width": 12, "height": 6,
+            "properties": {
+                "title": "HTTP 5xx Error Count",
+                "metrics": [
+                    ["AWS/ElasticBeanstalk", "ApplicationRequests5xx", "EnvironmentName", "InventoryApi-prod", { "stat": "Sum", "period": 300 }]
+                ],
+                "view": "timeSeries",
+                "region": "us-east-1"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12, "y": 12, "width": 12, "height": 6,
+            "properties": {
+                "title": "User Registrations (per hour)",
+                "metrics": [
+                    ["InventoryAPI", "inventory.users.registered.total", "service", "inventory-api", { "stat": "Sum", "period": 3600 }]
+                ],
+                "view": "singleValue",
+                "region": "us-east-1"
+            }
+        }
+    ]
+}
